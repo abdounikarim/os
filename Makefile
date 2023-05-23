@@ -6,7 +6,7 @@
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
 add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
-add-starship-config add-starship-file add-iterm-file activate-hidden-files
+global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 CASK_PACKAGES = brave-browser bitwarden docker iterm2 notion phpstorm postman rectangle slack sublime-text the-unarchiver
 CLI_PACKAGES = git docker mutagen-io/mutagen/mutagen-compose marp-cli starship php composer symfony-cli/tap/symfony-cli blackfire yarn ansible topgrade
@@ -16,7 +16,7 @@ install: install-brew blackfire-repository install-cask-packages install-cli-pac
 authorize-rectangle open-rectangle install-blackfire-probe install-xdebug create-gitignore-file \
 update-default-config install-oh-my-zsh install-zsh-auto add-zsh-autosuggestion install-zsh-vi-mode \
 add-zsh-vi-mode install-zsh-fast-syntax add-zsh-fast-syntax change-zsh-theme install-nerd-font \
-add-starship-config add-starship-file add-iterm-file activate-hidden-files
+global-makefile add-starship-config add-starship-file add-iterm-file activate-hidden-files
 
 install-brew:
 						sudo true
@@ -93,6 +93,9 @@ change-zsh-theme:
 
 install-nerd-font:
 						brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font
+
+global-makefile:
+						echo "alias gmake='make -f ~/Web/macos/Makefile'" >> ~/.zshrc
 
 add-starship-config:
 						echo 'eval "$$(starship init zsh)"' >> ~/.zshrc

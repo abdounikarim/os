@@ -1,0 +1,47 @@
+[init]
+	defaultBranch = main
+
+[user]
+    email = abdounikarim@gmail.com
+    name = Abdouni Abdelkarim
+    signingkey = CFF6DB5A7659EBFF
+
+[tag]
+    gpgsign = true
+
+[commit]
+    gpgsign = true
+
+[color]
+	ui = true
+
+[push]
+    default = current
+
+[help]
+	autocorrect = prompt
+
+[rerere]
+    enabled = true
+
+[core]
+    excludesfile = ~/.gitignore
+    whitespace = trailing-space
+	autocrlf = input
+	eol = lf
+    pager = delta
+
+[branch]
+	sort = committerdate
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

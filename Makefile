@@ -28,7 +28,7 @@ install:## Install dependencies
 		echo "alias cat='bat --theme=Dracula'" >> ~/.zshrc
 		echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
 		echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
-		echo "export GPG_TTY=$$(tty)" >> ~/.zshrc
+		echo "export GPG_TTY=$(tty)" >> ~/.zshrc
 		###< zsh ###
 
 		###> templates ###

@@ -1,5 +1,5 @@
 ##
-## # Install
+## # Install 🚀
 ##---------------------------------------------------------------------------
 
 .PHONY: install install-brew add-tap-packages install-cask-packages install-cli-packages \
@@ -109,7 +109,7 @@ activate-hidden-files:
 						killall Finder
 
 ##
-## # Update
+## # Update 🚧
 ##---------------------------------------------------------------------------
 
 .PHONY: update
@@ -118,7 +118,7 @@ update:					## Update everything
 						topgrade
 
 ##
-## # Remove
+## # Remove 🗑️
 ##---------------------------------------------------------------------------
 
 .PHONY: remove remove-xdebug delete-xdebug-config delete-gitignore-file delete-nerd-font \
@@ -173,7 +173,7 @@ delete-zshrc-file:
 						rm -f ~/.zshrc
 
 ##
-## # Help
+## # Help 💡
 ##---------------------------------------------------------------------------
 
 .PHONY: help

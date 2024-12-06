@@ -1,4 +1,4 @@
-# Install your Mac OS tools
+# Install your OSX tools
 
 ## Install tools
 ```bash

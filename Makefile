@@ -1,6 +1,6 @@
 .PHONY: install update remove help
 
-install:## Install dependencies
+install:## 📦 Install dependencies
 		sudo true
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
 		brew bundle
@@ -42,10 +42,10 @@ install:## Install dependencies
 		defaults write com.apple.finder AppleShowAllFiles TRUE
 		killall Finder
 
-update:	## Update everything
+update:	## 🔄 Update everything
 		brew bundle
 
-remove: ## Remove dependencies
+remove: ## 🗑️ Remove dependencies
 		###> xdebug ###
 		pecl uninstall xdebug
 		PHP_VERSION := $(shell php -v | grep -o 'PHP [0-9]\+\.[0-9]\+' | sed 's/PHP //')
@@ -62,7 +62,7 @@ remove: ## Remove dependencies
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo -u $$USER bash
 		rm -f ~/.zshrc
 
-help:	## Display help
+help:	## ℹ️ Display help
 		@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-20s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 .DEFAULT_GOAL := 	help

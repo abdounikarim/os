@@ -20,15 +20,7 @@ install:## 📦 Install dependencies
 
 		###> zsh ###
 		curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
-		echo 'source $$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh' >> ~/.zshrc
-		echo 'source $$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh' >> ~/.zshrc
-		echo 'source $$(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh' >> ~/.zshrc
-		sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="cloud"/' ~/.zshrc
-		echo "alias ls='lsd'" >> ~/.zshrc
-		echo "alias cat='bat --theme=Dracula'" >> ~/.zshrc
-		echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
-		echo 'eval "$$(starship init zsh)"' >> ~/.zshrc
-		echo "export GPG_TTY=$(tty)" >> ~/.zshrc
+		cp templates/.zshrc ~/.zshrc
 		###< zsh ###
 
 		###> templates ###
@@ -42,8 +34,14 @@ install:## 📦 Install dependencies
 		defaults write com.apple.finder AppleShowAllFiles TRUE
 		killall Finder
 
-update:	## 🔄 Update everything
+update:	## 🔄 Update everything, first cli and then casks
 		brew bundle
+
+		@grep '^cask "' Brewfile | \
+		sed 's/^cask "\(.*\)"/\1/' | \
+		while read -r cask; do \
+		  	brew upgrade --cask $$cask; \
+		done
 
 remove: ## 🗑️ Remove dependencies
 		###> xdebug ###

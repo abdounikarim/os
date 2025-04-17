@@ -1,33 +1,26 @@
 # Install your Mac OS tools
 
 ## Install tools
+
+Install Task
+```
+sudo sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+```
+
 ```bash
-make install
+task install
 ```
 
 ## Update tools
 ```bash
-make update
+gtask update
 ```
-
-## Configure Github or Gitlab SSH access
-Generate an ssh key locally :
-```bash
-ssh-keygen -t rsa -C "email@example.com"
-```
-
-Show public key :
-```bash
-cat ~/.ssh/id_rsa.pub
-```
-
-Add this key in Github or Gitlab
-
-## Synchronise Brave
-
-## Synchronise PHPStorm
 
 ## Remove tools
+
+```bash
+task uninstall
+```
 
 ## Customize .plist file
 

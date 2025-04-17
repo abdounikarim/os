@@ -166,6 +166,17 @@ tasks:
           echo "Docker configuration 🗑️"
         fi
 
+  dock:restore:
+    desc: "Restore Dock configuration"
+    cmds:
+      - cp templates/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist
+      - killall Dock
+
+  dock:save:
+    desc: "Save Dock configuration"
+    cmds:
+      - cp ~/Library/Preferences/com.apple.dock.plist templates/com.apple.dock.plist
+
   git:
     vars:
       ACTION: '{{.ACTION}}'

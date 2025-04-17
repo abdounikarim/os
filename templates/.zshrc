@@ -4,6 +4,9 @@ source $(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-h
 alias cat='bat --theme=Dracula'
 eval "$(starship init zsh)"
 export GPG_TTY=$(tty)
+if command -v symfony &>/dev/null; then
+    eval "$(symfony completion)"
+fi
 
 ls() {
     # Call lsd and handle output line by line

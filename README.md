@@ -15,6 +15,7 @@ task install
 ```bash
 gtask update
 ```
+_You can run `gtask` from anywhere in your terminal._
 
 ## Remove tools
 

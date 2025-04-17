@@ -1,0 +1,379 @@
+version: '3'
+
+silent: true
+
+vars:
+  ACTION: '{{default "install" .CLI_ARGS}}'
+
+tasks:
+  install:
+    desc: "Install dependencies"
+    cmds:
+      - task: brew
+
+  update:
+    desc: "Update dependencies"
+    cmd: topgrade
+
+  uninstall:
+    desc: "Uninstall dependencies"
+    vars:
+      ACTION: 'uninstall'
+    cmds:
+      - task: cli
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: cask
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: docker
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: git
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: js
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: php
+        vars: { ACTION: '{{.ACTION}} --ignore-dependencies --force' }
+      - task: phpstorm
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: rectangle
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: zsh
+        vars: { ACTION: '{{.ACTION}} --force' }
+      - task: brew
+        vars: { ACTION: '{{.ACTION}}' }
+      - task: kill:finder
+
+  blackfire:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          bash -c "$(curl -L https://installer.blackfire.io/installer.sh)"
+          blackfire php:{{.ACTION}}
+        fi
+
+  brew:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - sudo true
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+          task zsh
+          task docker
+          task cli
+          task cask
+          task git
+          task js
+          task php
+          task phpstorm
+          task rectangle
+          task show:hidden:files
+          task kill:finder
+        elif [ "{{.ACTION}}" = "uninstall" ]; then
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+          sudo rm -rf /opt/homebrew
+        fi
+
+  cask:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask bitwarden' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask claude' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask firefox' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask firefox@developer-edition' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask google-chrome' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask google-chrome@dev' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask iterm2' }
+      - task: iterm2:config
+        vars: { ACTION: '{{.ACTION}}' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask postman' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask slack' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask sublime-text' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask superwhisper' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask the-unarchiver' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask font-hack-nerd-font' }
+      - task: hack:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+  cli:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} lsd' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} tree' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} bat' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} gnupg' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} marp-cli' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} starship' }
+      - task: starship:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} ansible' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} topgrade' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} asciinema' }
+
+  docker:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask docker' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} docker-completion' }
+      - task: docker:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+  docker:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f /usr/local/bin/docker
+          rm -f /usr/local/bin/docker-credential-desktop
+          rm -f /usr/local/bin/docker-credential-ecr-login
+          rm -f /usr/local/bin/docker-credential-osxkeychain
+          rm -f /usr/local/bin/hub-tool
+          rm -f /usr/local/bin/kubectl
+          rm -f /usr/local/bin/kubectl.docker
+          rm -f /usr/local/cli-plugins/docker-compose
+          echo "Docker configuration 🗑️"
+        fi
+
+  git:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} git' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} git-delta' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} git-extras' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} git-quick-stats' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} gh' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} hub' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} act' }
+      - task: git:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+  git:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          cp templates/.gitignore ~/.gitignore
+          cp templates/.gitconfig ~/.gitconfig
+          echo "Git configuration ✅"
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f ~/.gitignore
+          rm -f ~/.gitconfig
+          echo "Git configuration 🗑️"
+        fi
+
+  hack:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f ~/Library/Fonts/Hack*
+          echo "Hack configuration 🗑️"
+        fi
+
+  iterm2:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+          echo "iTerm2 configuration ✅"
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f ~/Library/Preferences/com.googlecode.iterm2.plist
+          echo "iTerm2 configuration 🗑️"
+        fi
+
+  kill:finder:
+    cmd: killall Finder
+
+  js:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} node' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} pnpm' }
+
+  php:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} php' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} composer' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} symfony-cli/tap/symfony-cli' }
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          task pkg ACTION=install -- tap blackfireio/homebrew-blackfire
+        fi
+      - task: blackfire
+        vars: { ACTION: '{{.ACTION}}' }
+      - task: xdebug
+        vars: { ACTION: '{{.ACTION}}' }
+
+  phpstorm:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask phpstorm' }
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          task pkg ACTION=install -- tap dahlia/jetbrains-eap
+        fi
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask phpstorm-eap' }
+      - task: phpstorm:plugins
+        vars: { ACTION: '{{.ACTION}}' }
+
+  phpstorm:plugins:
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          phpstorm installPlugins Docker
+          phpstorm installPlugins com.intellij.kubernetes
+          phpstorm installPlugins name.kropp.intellij.makefile
+          phpstorm installPlugins lechuck.intellij-plugin.task
+          phpstorm installPlugins AngularJS
+          phpstorm installPlugins com.haulmont.rcb
+          phpstorm installPlugins dev.blachut.svelte.lang
+          phpstorm installPlugins org.jetbrains.plugins.vue
+          phpstorm installPlugins de.espend.idea.php.annotation
+          phpstorm installPlugins fr.adrienbrault.idea.symfony2plugin
+          phpstorm installPlugins com.codeium.intellij
+          phpstorm installPlugins Intellij_GitHub_Dark_Theme
+          echo "PHPStorm plugins ✅"
+        fi
+
+  pkg:
+    cmd: brew {{.CLI_ARGS}}
+
+  rectangle:
+    cmds:
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask rectangle' }
+      - task: rectangle:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+  rectangle:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          # Authorize Rectangle app by removing quarantine attribute
+          xattr -r -d com.apple.quarantine /Applications/Rectangle.app
+          # Open Rectangle
+          open -a /Applications/Rectangle.app
+          echo "Rectangle configuration ✅"
+        fi
+
+  show:hidden:files:
+    cmd: defaults write com.apple.finder AppleShowAllFiles TRUE
+
+  starship:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          mkdir -p ~/.config
+          cp templates/starship.toml ~/.config/starship.toml
+          echo "Starship configuration ✅"
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f ~/.config/starship.toml
+          echo "Starship configuration 🗑️"
+        fi
+
+  xdebug:
+    vars:
+      ACTION: '{{.ACTION}}'
+      PHP_VERSION:
+        sh: php -v | grep -o 'PHP [0-9]\+\.[0-9]\+' | sed 's/PHP //'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          pecl {{.ACTION}} xdebug
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          sed -i '' '/zend_extension="xdebug.so"/d' /opt/homebrew/etc/php/{{.PHP_VERSION}}/php.ini
+        fi
+
+  zsh:
+    vars:
+      ACTION: '{{.ACTION}}'
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -rf ~/.oh-my-zsh
+        fi
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} zsh-autosuggestions' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} zsh-fast-syntax-highlighting' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} zsh-vi-mode' }
+      - task: zsh:config
+        vars: { ACTION: '{{.ACTION}}' }
+
+  zsh:config:
+    vars:
+      ACTION: '{{.ACTION}}'
+      TASKFILE_PATH:
+        sh: pwd
+    cmds:
+      - |
+        if [ "{{.ACTION}}" = "install" ]; then
+          cp templates/.zshrc ~/.zshrc
+          echo "alias gtask='task --taskfile={{.TASKFILE_PATH}}/Taskfile.yaml'" >> ~/.zshrc
+          echo "Zsh configuration ✅"
+        elif [ "{{.ACTION}}" = "uninstall --force" ]; then
+          rm -f ~/.zshrc
+          echo "Zsh configuration 🗑️"
+        fi

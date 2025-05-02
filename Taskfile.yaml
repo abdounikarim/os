@@ -137,6 +137,10 @@ tasks:
         vars: { CLI_ARGS: '{{.ACTION}} topgrade' }
       - task: pkg
         vars: { CLI_ARGS: '{{.ACTION}} asciinema' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} mkcert' }
+      - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} nss' }
 
   docker:
     vars:

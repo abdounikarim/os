@@ -11,6 +11,8 @@ sudo sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/lo
 task install
 ```
 
+If you want to use gpg to sign your git commits, check the [GPG](./gpg.md) section.
+
 ## Update tools
 ```bash
 gtask update

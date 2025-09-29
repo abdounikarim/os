@@ -108,6 +108,8 @@ tasks:
       - task: pkg
         vars: { CLI_ARGS: '{{.ACTION}} --cask the-unarchiver' }
       - task: pkg
+        vars: { CLI_ARGS: '{{.ACTION}} --cask webstorm' }
+      - task: pkg
         vars: { CLI_ARGS: '{{.ACTION}} --cask font-hack-nerd-font' }
       - task: hack:config
         vars: { ACTION: '{{.ACTION}}' }

@@ -285,27 +285,6 @@ tasks:
         fi
       - task: pkg
         vars: { CLI_ARGS: '{{.ACTION}} --cask phpstorm-eap' }
-      - task: phpstorm:plugins
-        vars: { ACTION: '{{.ACTION}}' }
-
-  phpstorm:plugins:
-    cmds:
-      - |
-        if [ "{{.ACTION}}" = "install" ]; then
-          phpstorm installPlugins Docker
-          phpstorm installPlugins com.intellij.kubernetes
-          phpstorm installPlugins name.kropp.intellij.makefile
-          phpstorm installPlugins lechuck.intellij-plugin.task
-          phpstorm installPlugins AngularJS
-          phpstorm installPlugins com.haulmont.rcb
-          phpstorm installPlugins dev.blachut.svelte.lang
-          phpstorm installPlugins org.jetbrains.plugins.vue
-          phpstorm installPlugins de.espend.idea.php.annotation
-          phpstorm installPlugins fr.adrienbrault.idea.symfony2plugin
-          phpstorm installPlugins com.codeium.intellij
-          phpstorm installPlugins Intellij_GitHub_Dark_Theme
-          echo "PHPStorm plugins ✅"
-        fi
 
   pkg:
     cmd: brew {{.CLI_ARGS}}

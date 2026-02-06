@@ -2,7 +2,8 @@
 
 install:## 📦 Install dependencies
 		sudo true
-		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo -u $$USER bash
+		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
+		eval /opt/homebrew/bin/brew shellenv
 		brew bundle
 
 		###> rectangle ###

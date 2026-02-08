@@ -1,9 +1,14 @@
+autoload -Uz compinit
+compinit
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 alias cat='bat --theme=Dracula'
 eval "$(starship init zsh)"
 export GPG_TTY=$(tty)
+if command -v symfony &>/dev/null; then
+    eval "$(symfony completion)"
+fi
 
 ls() {
     # Call lsd and handle output line by line
@@ -25,7 +30,7 @@ ls() {
 
                 # Build output with git status and emojis
                 if [ $working_dir_status -eq 0 ] && [ $staging_area_status -eq 0 ]; then
-                  echo "$line  ✅ [Nothing to commit, working tree clea]"
+                  echo "$line  ✅ [Nothing to commit, working tree clean]"
                 elif [ $working_dir_status -eq 1 ] && [ $staging_area_status -eq 0 ]; then
                   echo "$line  📝 [Changes in working directory]"
                 elif [ $working_dir_status -eq 0 ] && [ $staging_area_status -eq 1 ]; then

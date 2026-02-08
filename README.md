@@ -1,33 +1,23 @@
 # Install your Mac OS tools
 
 ## Install tools
+
 ```bash
 make install
 ```
 
 ## Update tools
+
 ```bash
-make update
+gmake update
 ```
-
-## Configure Github or Gitlab SSH access
-Generate an ssh key locally :
-```bash
-ssh-keygen -t rsa -C "email@example.com"
-```
-
-Show public key :
-```bash
-cat ~/.ssh/id_rsa.pub
-```
-
-Add this key in Github or Gitlab
-
-## Synchronise Brave
-
-## Synchronise PHPStorm
+_You can run `gmake` from anywhere in your terminal._
 
 ## Remove tools
+
+```bash
+make remove
+```
 
 ## Customize .plist file
 

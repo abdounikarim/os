@@ -2,27 +2,21 @@
 
 ## Install tools
 
-Install Task
-```
-sudo sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
-```
-
 ```bash
-task install
+make install
 ```
-
-If you want to use gpg to sign your git commits, check the [GPG](./gpg.md) section.
 
 ## Update tools
+
 ```bash
-gtask update
+gmake update
 ```
-_You can run `gtask` from anywhere in your terminal._
+_You can run `gmake` from anywhere in your terminal._
 
 ## Remove tools
 
 ```bash
-task uninstall
+make remove
 ```
 
 ## Customize .plist file

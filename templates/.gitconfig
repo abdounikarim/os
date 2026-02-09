@@ -1,5 +1,5 @@
 [init]
-    defaultBranch = main
+	defaultBranch = main
 
 [user]
     email = abdounikarim@gmail.com
@@ -13,13 +13,13 @@
     gpgsign = true
 
 [color]
-    ui = true
+	ui = true
 
 [push]
     default = current
 
 [help]
-    autocorrect = prompt
+	autocorrect = prompt
 
 [rerere]
     enabled = true
@@ -27,12 +27,12 @@
 [core]
     excludesfile = ~/.gitignore
     whitespace = trailing-space
-    autocrlf = input
-    eol = lf
+	autocrlf = input
+	eol = lf
     pager = delta
 
 [branch]
-    sort = committerdate
+	sort = committerdate
 
 [interactive]
     diffFilter = delta --color-only

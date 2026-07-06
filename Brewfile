@@ -11,7 +11,6 @@ brew "gh" # https://github.com/cli/cli
 brew "hub" # https://github.com/mislav/hub
 brew "gnupg" # https://github.com/gpg/gnupg
 brew "docker" # https://github.com/docker/cli
-brew "docker-completion" # https://github.com/docker/cli
 brew "marp-cli" # https://github.com/marp-team/marp-cli
 brew "starship" # https://github.com/starship/starship
 brew "php" # https://github.com/php/php-src

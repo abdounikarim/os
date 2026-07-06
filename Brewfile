@@ -1,4 +1,4 @@
-# 'brew tap'
+# 'brew tap'
 tap "blackfireio/homebrew-blackfire"
 tap "box-project/box"
 

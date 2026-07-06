@@ -2,7 +2,7 @@
 
 install:## 📦 Install dependencies
 		sudo true
-		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
+		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
 		brew trust symfony-cli/tap
 		brew trust box-project/box
@@ -28,7 +28,7 @@ install:## 📦 Install dependencies
 		###< phpstorm ###
 
 		###> zsh ###
-		curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
+		[ -d "$$HOME/.oh-my-zsh" ] || curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 		cp templates/.zshrc ~/.zshrc
 		echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
 		###< zsh ###

@@ -48,6 +48,7 @@ update:	## 🔄 Update everything, first cli and then casks
 		brew trust symfony-cli/tap
 		brew trust box-project/box
 		brew trust blackfireio/blackfire
+		brew upgrade
 		brew bundle
 
 		@grep '^cask "' Brewfile | \

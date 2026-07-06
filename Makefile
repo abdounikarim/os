@@ -6,6 +6,7 @@ install:## 📦 Install dependencies
 		eval /opt/homebrew/bin/brew shellenv
 		brew trust symfony-cli/tap
 		brew trust box-project/box
+		brew trust blackfireio/blackfire
 		brew bundle
 
 		###> rectangle ###
@@ -44,6 +45,9 @@ install:## 📦 Install dependencies
 		killall Finder
 
 update:	## 🔄 Update everything, first cli and then casks
+		brew trust symfony-cli/tap
+		brew trust box-project/box
+		brew trust blackfireio/blackfire
 		brew bundle
 
 		@grep '^cask "' Brewfile | \

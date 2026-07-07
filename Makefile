@@ -3,7 +3,7 @@
 install:## 📦 Install dependencies
 		sudo true
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
-		eval /opt/homebrew/bin/brew shellenv
+		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
 		brew trust symfony-cli/tap
 		brew trust box-project/box
 		brew bundle

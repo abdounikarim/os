@@ -45,8 +45,31 @@ install:## 📦 Install dependencies
 		cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 		###< templates ###
 
+		###> macos ###
+		# Finder
 		defaults write com.apple.finder AppleShowAllFiles TRUE
+		defaults write com.apple.finder ShowPathbar -bool true
+		defaults write com.apple.finder ShowStatusBar -bool true
 		killall Finder
+
+		# Dock
+		defaults write com.apple.dock autohide -bool true
+		defaults write com.apple.dock show-recents -bool false
+		killall Dock
+
+		# Screenshots
+		defaults write com.apple.screencapture location ~/Desktop
+		defaults write com.apple.screencapture type png
+
+		# Keyboard
+		defaults write -g KeyRepeat -int 2
+		defaults write -g InitialKeyRepeat -int 15
+		defaults write -g ApplePressAndHoldEnabled -bool false
+
+		# Trackpad
+		defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+		defaults write -g com.apple.swipescrolldirection -bool false
+		###< macos ###
 
 update:	## 🔄 Update everything, first cli and then casks
 		brew trust symfony-cli/tap

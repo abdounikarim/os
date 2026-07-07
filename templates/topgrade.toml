@@ -1,0 +1,7 @@
+[misc]
+assume_yes = true
+no_retry = true
+disable = ["node", "composer"]
+
+[brew]
+greedy_casks = true

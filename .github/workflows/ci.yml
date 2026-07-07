@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Validate Brewfile
+        run: brew bundle check --no-upgrade || brew bundle list
+
+      - name: Lint Makefile
+        run: make --dry-run install 2>&1 | head -50

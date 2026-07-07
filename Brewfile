@@ -8,7 +8,6 @@ brew "bat" # https://github.com/sharkdp/bat
 brew "git-delta" # https://github.com/dandavison/delta
 brew "act" # https://github.com/nektos/act
 brew "gh" # https://github.com/cli/cli
-brew "hub" # https://github.com/mislav/hub
 brew "gnupg" # https://github.com/gpg/gnupg
 brew "docker" # https://github.com/docker/cli
 brew "marp-cli" # https://github.com/marp-team/marp-cli

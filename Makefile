@@ -1,4 +1,14 @@
-.PHONY: install update remove help
+.PHONY: backup install update remove help
+
+backup: ## 💾 Backup current dotfiles and config
+	$(eval BACKUP_DIR := $(HOME)/.dotfiles_backup/$(shell date +%Y%m%d_%H%M%S))
+	mkdir -p $(BACKUP_DIR)
+	[ -f ~/.zshrc ] && cp ~/.zshrc $(BACKUP_DIR)/.zshrc || true
+	[ -f ~/.gitconfig ] && cp ~/.gitconfig $(BACKUP_DIR)/.gitconfig || true
+	[ -f ~/.gitignore ] && cp ~/.gitignore $(BACKUP_DIR)/.gitignore || true
+	[ -f ~/.config/starship.toml ] && cp ~/.config/starship.toml $(BACKUP_DIR)/starship.toml || true
+	[ -f ~/Library/Preferences/com.googlecode.iterm2.plist ] && cp ~/Library/Preferences/com.googlecode.iterm2.plist $(BACKUP_DIR)/com.googlecode.iterm2.plist || true
+	@echo "Backup saved to $(BACKUP_DIR)"
 
 install:## 📦 Install dependencies
 		sudo true

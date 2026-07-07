@@ -19,6 +19,10 @@ install:## 📦 Install dependencies
 		blackfire php:install
 		###< blackfire ###
 
+		###> gpg ###
+		brew install pinentry-mac
+		###< gpg ###
+
 		###> xdebug ###
 		pecl install xdebug
 		###< xdebug ###

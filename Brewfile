@@ -40,6 +40,7 @@ cask "insomnia" # https://github.com/Kong/insomnia
 cask "rectangle" # https://github.com/rxhanson/Rectangle
 cask "slack" # https://github.com/slackhq/slack-desktop
 cask "claude" # https://claude.ai
+cask "claude-code" # https://claude.ai/code
 cask "sublime-text" # https://github.com/sublimehq/sublime_text
 cask "superwhisper" # https://superwhisper.com
 cask "the-unarchiver" # https://github.com/MacPaw/XADMaster

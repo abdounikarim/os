@@ -43,6 +43,9 @@ install:## 📦 Install dependencies
 		mkdir -p ~/.config
 		cp templates/starship.toml ~/.config/starship.toml
 		cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+		mkdir -p ~/.ssh
+		cp templates/.ssh_config ~/.ssh/config
+		chmod 600 ~/.ssh/config
 		###< templates ###
 
 		defaults write com.apple.finder AppleShowAllFiles TRUE

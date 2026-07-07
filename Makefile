@@ -8,6 +8,7 @@ install:## 📦 Install dependencies
 		brew trust box-project/box
 		brew trust blackfireio/blackfire
 		brew bundle
+		[ -f Brewfile.local ] && brew bundle --file Brewfile.local || true
 
 		###> rectangle ###
 		xattr -r -d com.apple.quarantine /Applications/Rectangle.app
@@ -54,6 +55,7 @@ update:	## 🔄 Update everything, first cli and then casks
 		brew trust blackfireio/blackfire
 		brew upgrade
 		brew bundle
+		[ -f Brewfile.local ] && brew bundle --file Brewfile.local || true
 
 		@grep '^cask "' Brewfile | \
 		sed 's/^cask "\(.*\)"/\1/' | \

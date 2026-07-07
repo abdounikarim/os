@@ -45,3 +45,13 @@
 
 [diff]
     colorMoved = default
+
+[alias]
+	st = status
+	co = checkout
+	br = branch
+	ci = commit
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	aliases = config --get-regexp alias

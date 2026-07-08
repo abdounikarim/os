@@ -23,6 +23,7 @@ brew "zsh-fast-syntax-highlighting" # https://github.com/zdharma-continuum/fast-
 brew "zsh-vi-mode" # https://github.com/jeffreytse/zsh-vi-mode
 brew "box-project/box/box" # https://github.com/box-project/box
 brew "asciinema" # https://github.com/asciinema/asciinema
+brew "glow" # https://github.com/charmbracelet/glow
 brew "tree" # https://github.com/Old-Man-Programmer/tree
 brew "mkcert" # https://github.com/FiloSottile/mkcert
 brew "nss" # https://github.com/nss-dev/nss

@@ -34,7 +34,7 @@ install:## 📦 Install dependencies
 		###> zsh ###
 		[ -d "$$HOME/.oh-my-zsh" ] || curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
 		cp templates/.zshrc ~/.zshrc
-		echo "alias gmake='make -f $(PWD)/Makefile'" >> ~/.zshrc
+		echo "alias gmake='make -C $(PWD) -f $(PWD)/Makefile'" >> ~/.zshrc
 		###< zsh ###
 
 		###> templates ###

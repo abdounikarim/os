@@ -43,6 +43,8 @@ install:## 📦 Install dependencies
 		mkdir -p ~/.config
 		cp templates/starship.toml ~/.config/starship.toml
 		cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+		mkdir -p ~/.config/topgrade
+		cp templates/topgrade.toml ~/.config/topgrade.toml
 		###< templates ###
 
 		defaults write com.apple.finder AppleShowAllFiles TRUE

@@ -56,7 +56,7 @@ update:	## 🔄 Update everything, first cli and then casks
 		brew bundle
 
 		@grep '^cask "' Brewfile | \
-		sed 's/^cask "\(.*\)"/\1/' | \
+		awk -F'"' '{print $$2}' | \
 		while read -r cask; do \
 		  	brew upgrade --cask $$cask; \
 		done

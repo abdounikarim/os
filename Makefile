@@ -1,4 +1,4 @@
-.PHONY: install update remove help
+.PHONY: install update check remove help
 
 install:## 📦 Install dependencies
 		sudo true
@@ -60,6 +60,19 @@ update:	## 🔄 Update everything, first cli and then casks
 		while read -r cask; do \
 		  	brew upgrade --cask $$cask; \
 		done
+
+check: ## ✅ Check that the environment is correctly set up
+	@echo "Checking environment..."
+	@command -v brew > /dev/null 2>&1 && echo "✅ brew" || echo "❌ brew not found"
+	@command -v starship > /dev/null 2>&1 && echo "✅ starship" || echo "❌ starship not found"
+	@command -v php > /dev/null 2>&1 && echo "✅ php" || echo "❌ php not found"
+	@command -v composer > /dev/null 2>&1 && echo "✅ composer" || echo "❌ composer not found"
+	@command -v node > /dev/null 2>&1 && echo "✅ node" || echo "❌ node not found"
+	@command -v docker > /dev/null 2>&1 && echo "✅ docker" || echo "❌ docker not found"
+	@command -v gpg > /dev/null 2>&1 && echo "✅ gpg" || echo "❌ gpg not found"
+	@[ -f ~/.gitconfig ] && echo "✅ ~/.gitconfig" || echo "❌ ~/.gitconfig not found"
+	@[ -f ~/.zshrc ] && echo "✅ ~/.zshrc" || echo "❌ ~/.zshrc not found"
+	@[ -f ~/.config/starship.toml ] && echo "✅ ~/.config/starship.toml" || echo "❌ ~/.config/starship.toml not found"
 
 remove: ## 🗑️ Remove dependencies
 		sudo true

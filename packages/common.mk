@@ -24,6 +24,7 @@ common-install: ## Install common tools and apps
 		brew install --cask iterm2 # https://github.com/gnachman/iTerm2
 		brew install --cask insomnia # https://github.com/Kong/insomnia
 		brew install --cask rectangle # https://github.com/rxhanson/Rectangle
+		brew install --cask maccy # https://github.com/p0deje/Maccy
 		brew install --cask slack # https://github.com/slackhq/slack-desktop
 		brew install --cask claude # https://claude.ai
 		brew install --cask claude-code # https://claude.ai/code
@@ -47,6 +48,6 @@ common-update: common-install ## Update common tools and apps
 
 common-remove: ## Remove common tools and apps
 		brew uninstall --force --ignore-dependencies lsd bat gnupg pinentry-mac marp-cli starship asciinema glow tree mkcert nss act ansible rclone
-		brew uninstall --cask --force --ignore-dependencies --zap font-hack-nerd-font docker-desktop brave-browser brave-browser@beta firefox bitwarden iterm2 insomnia rectangle slack claude claude-code sublime-text superwhisper the-unarchiver
+		brew uninstall --cask --force --ignore-dependencies --zap font-hack-nerd-font docker-desktop brave-browser brave-browser@beta firefox bitwarden iterm2 insomnia rectangle maccy slack claude claude-code sublime-text superwhisper the-unarchiver
 		rm -f ~/.config/starship.toml
 		rm -f ~/Library/Preferences/com.googlecode.iterm2.plist

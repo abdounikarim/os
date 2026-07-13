@@ -10,10 +10,13 @@ jobs:
   validate:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
+
+      - name: Untap pre-installed taps we don't use
+        run: brew untap aws/tap
 
       - name: Lint Makefile
         run: make --dry-run install 2>&1 | head -100
@@ -24,3 +27,6 @@ jobs:
             echo "== $pkg-install =="
             make --dry-run $pkg-install
           done
+
+      - name: Run make install for real
+        run: make install

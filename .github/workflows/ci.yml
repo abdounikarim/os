@@ -24,3 +24,6 @@ jobs:
             echo "== $pkg-install =="
             make --dry-run $pkg-install
           done
+
+      - name: Run make install for real
+        run: make install

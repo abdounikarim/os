@@ -1,74 +1,35 @@
-.PHONY: install update remove help
+# macOS provisioning Makefile.
+# Each package under packages/*.mk centralizes both installation and
+# configuration for one language/tool group. `make install` runs them all;
+# `make <package>-install` (e.g. `make php-install`) runs just one.
+# See `make help` for all targets.
 
-install:## 📦 Install dependencies
+PACKAGES := common git zsh php js ruby python cleaner
+
+include $(wildcard packages/*.mk)
+
+.PHONY: install update remove dock-restore dock-save help \
+	$(foreach p,$(PACKAGES),$(p)-install $(p)-update $(p)-remove)
+
+install: $(foreach p,$(PACKAGES),$(p)-install) ## 📦 Install every package
 		sudo true
 		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
-		brew trust symfony-cli/tap
-		brew trust box-project/box
-		brew trust blackfireio/blackfire
-		brew bundle
 
-		###> rectangle ###
-		xattr -r -d com.apple.quarantine /Applications/Rectangle.app
-		open -a rectangle
-		###< rectangle ###
-
-		###> blackfire ###
-		bash -c "$$(curl -L https://installer.blackfire.io/installer.sh)"
-		blackfire php:install
-		###< blackfire ###
-
-		###> gpg ###
-		brew install pinentry-mac
-		###< gpg ###
-
-		###> xdebug ###
-		pecl install xdebug
-		###< xdebug ###
-
-		###> phpstorm ###
-		phpstorm installPlugins fr.adrienbrault.idea.symfony2plugin
-		###< phpstorm ###
-
-		###> zsh ###
-		[ -d "$$HOME/.oh-my-zsh" ] || curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sudo -u $$USER bash
-		cp templates/.zshrc ~/.zshrc
-		echo "alias gmake='make -C $(PWD) -f $(PWD)/Makefile'" >> ~/.zshrc
-		###< zsh ###
-
-		###> templates ###
-		cp templates/.gitignore ~/.gitignore
-		cp templates/.gitconfig ~/.gitconfig
-		mkdir -p ~/.config
-		cp templates/starship.toml ~/.config/starship.toml
-		cp templates/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
-		###< templates ###
-
+		# Show hidden files in Finder.
 		defaults write com.apple.finder AppleShowAllFiles TRUE
 		killall Finder
 
-update:	## 🔄 Update everything, first cli and then casks
-		brew trust symfony-cli/tap
-		brew trust box-project/box
-		brew trust blackfireio/blackfire
+update: ## 🔄 Update every package
 		brew upgrade -y
-		brew bundle
+		$(MAKE) $(foreach p,$(PACKAGES),$(p)-update)
 
-		@grep '^cask "' Brewfile | \
-		awk -F'"' '{print $$2}' | \
-		while read -r cask; do \
-		  	brew upgrade --cask $$cask; \
-		done
-
-remove: ## 🗑️ Remove dependencies
+remove: $(foreach p,$(PACKAGES),$(p)-remove) ## 🗑️ Remove every package and uninstall Homebrew itself
 		sudo true
 
-		## Remove all brew packages
-		cat Brewfile | grep '^brew ' | awk -F'"' '{print $2}' | xargs brew uninstall --force --ignore-dependencies
-		cat Brewfile | grep '^cask ' | awk -F'"' '{print $2}' | xargs brew uninstall --cask --force --ignore-dependencies --zap
-
 		###> docker ###
+		# Docker Desktop doesn't clean up these binaries on its own:
+		# https://docs.docker.com/desktop/uninstall/
 		sudo rm -f /usr/local/bin/docker
 		sudo rm -f /usr/local/bin/docker-credential-desktop
 		sudo rm -f /usr/local/bin/docker-credential-ecr-login
@@ -79,14 +40,11 @@ remove: ## 🗑️ Remove dependencies
 		sudo rm -f /usr/local/cli-plugins/docker-compose
 		###< docker ###
 
-		rm -f ~/.gitignore
 		rm -f ~/Library/Fonts/Hack*
-		rm -f ~/.config/starship.toml
-		rm -f ~/Library/Preferences/com.googlecode.iterm2.plist
-		chmod a+x ~/.oh-my-zsh/tools/uninstall.sh
-		~/.oh-my-zsh/tools/uninstall.sh
+
+		# Finally, remove Homebrew itself:
+		# https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo /bin/bash
-		rm -f ~/.zshrc
 		sudo rm -rf /opt/homebrew
 
 dock-restore: ## Restore Dock configuration
@@ -97,6 +55,6 @@ dock-save: ## Save Dock configuration
 		cp ~/Library/Preferences/com.apple.dock.plist templates/com.apple.dock.plist
 
 help:	## ℹ️ Display help
-		@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-20s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+		@grep -hE '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-20s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 .DEFAULT_GOAL := 	help

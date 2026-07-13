@@ -15,8 +15,12 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
 
-      - name: Validate Brewfile
-        run: brew bundle check --no-upgrade || brew bundle list
-
       - name: Lint Makefile
-        run: make --dry-run install 2>&1 | head -50
+        run: make --dry-run install 2>&1 | head -100
+
+      - name: Sanity-check each package target
+        run: |
+          for pkg in common git zsh php js ruby python cleaner; do
+            echo "== $pkg-install =="
+            make --dry-run $pkg-install
+          done

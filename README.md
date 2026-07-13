@@ -1,22 +1,31 @@
 # Install your Mac OS tools
 
+Tools are grouped into packages under `packages/`: `common`, `git`, `zsh`,
+`php`, `js`, `ruby`, `python`, `cleaner`. Each `.mk` file installs its
+Homebrew formulae/casks and applies that package's own configuration
+(dotfiles, Xdebug, Blackfire, PhpStorm plugins, app quarantine removal, etc.)
+in one place. `ruby` and `python` are currently empty stubs.
+
 ## Install tools
 
 ```bash
-make install
+make install          # every package
+make php-install       # a single package
 ```
 
 ## Update tools
 
 ```bash
-gmake update
+gmake update            # every package
+gmake php-update        # a single package
 ```
 _You can run `gmake` from anywhere in your terminal._
 
 ## Remove tools
 
 ```bash
-make remove
+make remove             # every package, plus Homebrew itself
+make php-remove         # a single package's brews/casks only
 ```
 
 ## Customize .plist file

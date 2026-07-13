@@ -11,6 +11,7 @@ common-install: ## Install common tools and apps
 		brew install glow # https://github.com/charmbracelet/glow
 		brew install tree # https://github.com/Old-Man-Programmer/tree
 		brew install mkcert # https://github.com/FiloSottile/mkcert
+		brew install rclone # https://github.com/rclone/rclone
 		brew install nss # https://github.com/nss-dev/nss
 		brew install act # https://github.com/nektos/act
 		brew install ansible # https://github.com/ansible/ansible
@@ -46,7 +47,7 @@ common-install: ## Install common tools and apps
 common-update: common-install ## Update common tools and apps
 
 common-remove: ## Remove common tools and apps
-		brew uninstall --force --ignore-dependencies lsd bat gnupg pinentry-mac marp-cli starship asciinema glow tree mkcert nss act ansible
+		brew uninstall --force --ignore-dependencies lsd bat gnupg pinentry-mac marp-cli starship asciinema glow tree mkcert nss act ansible rclone
 		brew uninstall --cask --force --ignore-dependencies --zap font-hack-nerd-font docker-desktop brave-browser brave-browser@beta firefox bitwarden iterm2 insomnia rectangle maccy slack claude claude-code sublime-text superwhisper the-unarchiver
 		rm -f ~/.config/starship.toml
 		rm -f ~/Library/Preferences/com.googlecode.iterm2.plist

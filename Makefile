@@ -12,25 +12,25 @@ install: ## 📦 Install everything
 		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
 		brew install ansible
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
+		ansible-playbook ansible/playbook.yml
 
 install-%: ## 📦 Install a single role (common, git, zsh, php, js, ruby, python, cleaner)
 		sudo true
 		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
 		command -v ansible-playbook > /dev/null 2>&1 || brew install ansible
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $*
+		ansible-playbook ansible/playbook.yml --tags $*
 
 update: ## 🔄 Update everything
 		brew upgrade -y
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
+		ansible-playbook ansible/playbook.yml
 
 update-%: ## 🔄 Update a single role
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $*
+		ansible-playbook ansible/playbook.yml --tags $*
 
 remove: ## 🗑️ Remove everything and uninstall Homebrew itself
 		sudo true
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml -e pkg_state=absent
+		ansible-playbook ansible/playbook.yml -e pkg_state=absent
 
 		###> docker ###
 		# Docker Desktop doesn't clean up these binaries on its own:
@@ -53,7 +53,7 @@ remove: ## 🗑️ Remove everything and uninstall Homebrew itself
 		sudo rm -rf /opt/homebrew
 
 remove-%: ## 🗑️ Remove a single role
-		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $* -e pkg_state=absent
+		ansible-playbook ansible/playbook.yml --tags $* -e pkg_state=absent
 
 dock-restore: ## Restore Dock configuration
 		cp templates/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist

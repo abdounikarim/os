@@ -34,10 +34,21 @@
 - name: Configure PHP tooling
   when: pkg_state == 'present'
   block:
-    - name: Install Blackfire CLI agent + PHP probe
-      ansible.builtin.shell: bash -c "$(curl -L https://installer.blackfire.io/installer.sh)"
-      args:
-        creates: /usr/local/bin/blackfire
+    - name: Check if Blackfire is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/blackfire
+      register: blackfire_installed
+
+    - name: Download Blackfire installer # https://blackfire.io/docs/up-and-running/installation
+      ansible.builtin.get_url:
+        url: https://installer.blackfire.io/installer.sh
+        dest: /tmp/blackfire-install.sh
+        mode: "0755"
+      when: not blackfire_installed.stat.exists
+
+    - name: Run Blackfire installer (CLI agent + PHP probe)
+      ansible.builtin.command: /tmp/blackfire-install.sh
+      when: not blackfire_installed.stat.exists
 
     - name: Register Blackfire PHP probe
       ansible.builtin.command: blackfire php:install

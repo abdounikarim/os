@@ -24,7 +24,7 @@ jobs:
       - name: Syntax-check the Ansible playbook
         run: |
           brew install ansible
-          ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --syntax-check
+          ansible-playbook ansible/playbook.yml --syntax-check
 
       - name: Sanity-check each role tag
         run: |

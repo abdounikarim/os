@@ -28,6 +28,26 @@ make remove             # every package, plus Homebrew itself
 make php-remove         # a single package's brews/casks only
 ```
 
+## zsh plugins
+
+All plugins in `templates/.zshrc` load through a single mechanism: the
+`plugins=(...)` array, read by `source $ZSH/oh-my-zsh.sh`. Two kinds of
+entries live in there:
+
+- **Bundled with oh-my-zsh**: `git`, `docker`, `docker-compose`, `composer`,
+  `symfony`, `macos`, `brew`, `history-substring-search`.
+- **Custom plugins** (`zsh-autosuggestions`, `zsh-vi-mode`,
+  `fast-syntax-highlighting`) — not bundled with oh-my-zsh, so `packages/zsh.mk`
+  git-clones them straight into `$ZSH_CUSTOM/plugins/<name>/` instead of
+  installing them via Homebrew. oh-my-zsh's loader only picks up a plugin if
+  it finds a file at `$ZSH_CUSTOM/plugins/<name>/<name>.plugin.zsh`, so each
+  clone's directory name has to match its own plugin file — that's why the
+  third one is named `fast-syntax-highlighting` here rather than the
+  `zsh-fast-syntax-highlighting` Homebrew formula name it used to have.
+
+See the [oh-my-zsh Customization wiki](https://github.com/ohmyzsh/ohmyzsh/wiki/Customization)
+for how `$ZSH_CUSTOM` and the `plugins=()` array work.
+
 ## Customize .plist file
 
 1. Copy the file you want from `~/Library/Preferences`

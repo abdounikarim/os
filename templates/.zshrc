@@ -1,15 +1,24 @@
-autoload -Uz compinit
-compinit
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-source $(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(
+  git
+  docker
+  docker-compose
+  composer
+  symfony
+  macos
+  brew
+  history-substring-search
+  zsh-autosuggestions
+  zsh-vi-mode
+  fast-syntax-highlighting
+)
+source $ZSH/oh-my-zsh.sh
+
 alias cat='bat --theme=Dracula'
 eval "$(starship init zsh)"
 export GPG_TTY=$(tty)
-if command -v symfony &>/dev/null; then
-    eval "$(symfony completion)"
-fi
 
+unalias ls 2>/dev/null
 ls() {
     # Call lsd and handle output line by line
     command lsd --color=always --icon=always "$@" | while IFS= read -r line; do

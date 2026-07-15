@@ -1,0 +1,8 @@
+---
+# Ruby toolchain — stub, nothing installed yet.
+# Add formulae/casks and config here when Ruby tooling is needed
+# (e.g. rbenv, ruby-build, rubocop).
+
+- name: Ruby package is a stub
+  ansible.builtin.debug:
+    msg: "ruby package is a stub — nothing to {{ 'install' if pkg_state == 'present' else 'remove' }} yet"

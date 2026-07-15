@@ -21,11 +21,16 @@ jobs:
       - name: Lint Makefile
         run: make --dry-run install 2>&1 | head -100
 
-      - name: Sanity-check each package target
+      - name: Syntax-check the Ansible playbook
         run: |
-          for pkg in common git zsh php js ruby python cleaner; do
-            echo "== $pkg-install =="
-            make --dry-run $pkg-install
+          brew install ansible
+          ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --syntax-check
+
+      - name: Sanity-check each role tag
+        run: |
+          for role in common git zsh php js ruby python cleaner; do
+            echo "== $role =="
+            make --dry-run install-$role
           done
 
       - name: Run make install for real

@@ -1,0 +1,59 @@
+---
+# zsh plugins and shell config.
+
+- name: Install oh-my-zsh and plugins
+  when: pkg_state == 'present'
+  block:
+    - name: Install oh-my-zsh # https://ohmyz.sh
+      ansible.builtin.shell: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh -s -- --unattended
+      args:
+        creates: "~/.oh-my-zsh"
+
+    # Installed as oh-my-zsh custom plugins (not Homebrew) so they load
+    # through the plugins=() array like the bundled ones. Directory names
+    # must match each plugin's own <name>.plugin.zsh file. The git module
+    # clones if missing and pulls latest if already cloned.
+    - name: Clone/update zsh-autosuggestions
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+    - name: Clone/update zsh-vi-mode
+      ansible.builtin.git:
+        repo: https://github.com/jeffreytse/zsh-vi-mode
+        dest: "~/.oh-my-zsh/custom/plugins/zsh-vi-mode"
+
+    - name: Clone/update fast-syntax-highlighting
+      ansible.builtin.git:
+        repo: https://github.com/zdharma-continuum/fast-syntax-highlighting
+        dest: "~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
+
+    - name: Copy .zshrc
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../templates/.zshrc"
+        dest: "~/.zshrc"
+        mode: "0644"
+
+    - name: Add gmake alias
+      ansible.builtin.lineinfile:
+        path: "~/.zshrc"
+        line: "alias gmake='make -C {{ playbook_dir }}/.. -f {{ playbook_dir }}/../Makefile'"
+
+- name: Remove oh-my-zsh and shell config
+  when: pkg_state == 'absent'
+  block:
+    - name: Check oh-my-zsh uninstaller exists
+      ansible.builtin.stat:
+        path: "~/.oh-my-zsh/tools/uninstall.sh"
+      register: omz_uninstaller
+
+    - name: Run oh-my-zsh uninstaller
+      ansible.builtin.command: "sh ~/.oh-my-zsh/tools/uninstall.sh"
+      environment:
+        ZSH: "~/.oh-my-zsh"
+      when: omz_uninstaller.stat.exists
+
+    - name: Remove .zshrc
+      ansible.builtin.file:
+        path: "~/.zshrc"
+        state: absent

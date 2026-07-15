@@ -1,0 +1,53 @@
+---
+# PHP toolchain: interpreter, Composer, Symfony CLI, Box, PhpStorm, Xdebug, Blackfire.
+
+- name: Install/remove PHP taps
+  community.general.homebrew_tap:
+    name:
+      - blackfireio/homebrew-blackfire # https://github.com/blackfireio/homebrew-blackfire
+      - box-project/box # https://github.com/box-project/homebrew-box
+    state: "{{ pkg_state }}"
+
+- name: Trust PHP-related taps
+  ansible.builtin.command: "brew trust {{ item }}"
+  loop:
+    - symfony-cli/tap
+    - box-project/box
+    - blackfireio/blackfire
+  changed_when: false
+  when: pkg_state == 'present'
+
+- name: Install/remove PHP formulae
+  community.general.homebrew:
+    name:
+      - php # https://github.com/php/php-src
+      - composer # https://github.com/composer/composer
+      - symfony-cli/tap/symfony-cli # https://github.com/symfony-cli/symfony-cli
+      - box-project/box/box # https://github.com/box-project/box
+    state: "{{ pkg_state }}"
+
+- name: Install/remove PhpStorm
+  community.general.homebrew_cask:
+    name: phpstorm # https://github.com/JetBrains/intellij-community
+    state: "{{ pkg_state }}"
+
+- name: Configure PHP tooling
+  when: pkg_state == 'present'
+  block:
+    - name: Install Blackfire CLI agent + PHP probe
+      ansible.builtin.shell: bash -c "$(curl -L https://installer.blackfire.io/installer.sh)"
+      args:
+        creates: /usr/local/bin/blackfire
+
+    - name: Register Blackfire PHP probe
+      ansible.builtin.command: blackfire php:install
+      changed_when: false
+
+    - name: Install Xdebug via PECL # https://xdebug.org
+      community.general.pear:
+        name: xdebug
+        state: present
+
+    - name: Install Symfony plugin for PhpStorm # https://github.com/Haehnchen/idea-php-symfony2-plugin
+      ansible.builtin.command: phpstorm installPlugins fr.adrienbrault.idea.symfony2plugin
+      changed_when: false

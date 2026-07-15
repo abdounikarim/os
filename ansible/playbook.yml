@@ -1,0 +1,44 @@
+---
+- name: Configure macOS development environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    pkg_state: present # set to "absent" (-e pkg_state=absent) to remove instead of install
+
+  roles:
+    - { role: common, tags: [common] }
+    - { role: git, tags: [git] }
+    - { role: zsh, tags: [zsh] }
+    - { role: php, tags: [php] }
+    - { role: js, tags: [js] }
+    - { role: ruby, tags: [ruby] }
+    - { role: python, tags: [python] }
+    - { role: cleaner, tags: [cleaner] }
+
+  post_tasks:
+    # Older versions of this repo set this via a plain untyped `defaults
+    # write ... TRUE` shell command, which macOS stores as a string. Clear
+    # it first so setting it as a proper bool below doesn't hit a type
+    # mismatch on machines that still have the string-typed value.
+    - name: Clear any existing (possibly mistyped) Finder hidden-files setting
+      community.general.osx_defaults:
+        domain: com.apple.finder
+        key: AppleShowAllFiles
+        state: absent
+      when: pkg_state == 'present'
+
+    - name: Show hidden files in Finder
+      community.general.osx_defaults:
+        domain: com.apple.finder
+        key: AppleShowAllFiles
+        type: bool
+        value: true
+      when: pkg_state == 'present'
+      notify: Restart Finder
+
+  handlers:
+    - name: Restart Finder
+      ansible.builtin.command: killall Finder
+      changed_when: false

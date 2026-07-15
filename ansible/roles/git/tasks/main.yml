@@ -1,0 +1,30 @@
+---
+# git-related CLI tools and config.
+
+- name: Install/remove git formulae
+  community.general.homebrew:
+    name:
+      - git-delta # https://github.com/dandavison/delta
+      - gh # https://github.com/cli/cli
+    state: "{{ pkg_state }}"
+
+- name: Copy git config
+  when: pkg_state == 'present'
+  block:
+    - name: Copy .gitignore
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../templates/.gitignore"
+        dest: "~/.gitignore"
+        mode: "0644"
+
+    - name: Copy .gitconfig
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../templates/.gitconfig"
+        dest: "~/.gitconfig"
+        mode: "0644"
+
+- name: Remove .gitignore
+  ansible.builtin.file:
+    path: "~/.gitignore"
+    state: absent
+  when: pkg_state == 'absent'

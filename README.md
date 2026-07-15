@@ -1,32 +1,37 @@
 # Install your Mac OS tools
 
-Tools are grouped into packages under `packages/`: `common`, `git`, `zsh`,
-`php`, `js`, `ruby`, `python`, `cleaner`. Each `.mk` file installs its
-Homebrew formulae/casks and applies that package's own configuration
-(dotfiles, Xdebug, Blackfire, PhpStorm plugins, app quarantine removal, etc.)
-in one place. `ruby` and `python` are currently empty stubs.
+The `Makefile` only bootstraps Homebrew and Ansible; everything else —
+every package's Homebrew formulae/casks and its own configuration (dotfiles,
+Xdebug, Blackfire, PhpStorm plugins, app quarantine removal, etc.) — is
+managed by Ansible. Roles live under `ansible/roles/`: `common`, `git`,
+`zsh`, `php`, `js`, `ruby`, `python`, `cleaner`. `ruby` and `python` are
+currently empty stubs.
 
 ## Install tools
 
 ```bash
-make install          # every package
-make php-install       # a single package
+make install           # every role
+make install-php       # a single role
 ```
 
 ## Update tools
 
 ```bash
-gmake update            # every package
-gmake php-update        # a single package
+gmake update            # every role
+gmake update-php        # a single role
 ```
 _You can run `gmake` from anywhere in your terminal._
 
 ## Remove tools
 
 ```bash
-make remove             # every package, plus Homebrew itself
-make php-remove         # a single package's brews/casks only
+make remove              # every role, plus Homebrew itself
+make remove-php          # a single role's brews/casks only
 ```
+
+Behind the scenes, `install`/`update`/`remove` all run
+`ansible-playbook ansible/playbook.yml`, scoped to one role via `--tags`
+and switched to removal via `-e pkg_state=absent`.
 
 ## zsh plugins
 
@@ -37,8 +42,8 @@ entries live in there:
 - **Bundled with oh-my-zsh**: `git`, `docker`, `docker-compose`, `composer`,
   `symfony`, `macos`, `brew`, `history-substring-search`.
 - **Custom plugins** (`zsh-autosuggestions`, `zsh-vi-mode`,
-  `fast-syntax-highlighting`) — not bundled with oh-my-zsh, so `packages/zsh.mk`
-  git-clones them straight into `$ZSH_CUSTOM/plugins/<name>/` instead of
+  `fast-syntax-highlighting`) — not bundled with oh-my-zsh, so the `zsh`
+  Ansible role git-clones them straight into `$ZSH_CUSTOM/plugins/<name>/` instead of
   installing them via Homebrew. oh-my-zsh's loader only picks up a plugin if
   it finds a file at `$ZSH_CUSTOM/plugins/<name>/<name>.plugin.zsh`, so each
   clone's directory name has to match its own plugin file — that's why the

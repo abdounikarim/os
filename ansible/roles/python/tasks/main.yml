@@ -1,0 +1,8 @@
+---
+# Python toolchain — stub, nothing installed yet.
+# Add formulae/casks and config here when Python tooling is needed
+# (e.g. pyenv, poetry, black).
+
+- name: Python package is a stub
+  ansible.builtin.debug:
+    msg: "python package is a stub — nothing to {{ 'install' if pkg_state == 'present' else 'remove' }} yet"

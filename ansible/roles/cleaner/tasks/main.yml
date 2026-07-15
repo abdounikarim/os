@@ -1,0 +1,8 @@
+---
+# System/package maintenance tooling.
+
+- name: Install/remove cleaner formulae
+  community.general.homebrew:
+    name:
+      - topgrade # https://github.com/topgrade-rs/topgrade
+    state: "{{ pkg_state }}"

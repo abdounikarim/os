@@ -1,0 +1,89 @@
+---
+# Common CLI tools and desktop apps used regardless of language/stack.
+
+- name: Install/remove common formulae
+  community.general.homebrew:
+    name:
+      - lsd # https://github.com/lsd-rs/lsd
+      - bat # https://github.com/sharkdp/bat
+      - gnupg # https://github.com/gpg/gnupg
+      - pinentry-mac # https://github.com/GPGTools/pinentry
+      - marp-cli # https://github.com/marp-team/marp-cli
+      - starship # https://github.com/starship/starship
+      - asciinema # https://github.com/asciinema/asciinema
+      - glow # https://github.com/charmbracelet/glow
+      - tree # https://github.com/Old-Man-Programmer/tree
+      - mkcert # https://github.com/FiloSottile/mkcert
+      - rclone # https://github.com/rclone/rclone
+      - nss # https://github.com/nss-dev/nss
+      - act # https://github.com/nektos/act
+      - bats-core # https://github.com/bats-core/bats-core
+      - ansible # https://github.com/ansible/ansible
+    state: "{{ pkg_state }}"
+
+- name: Install/remove common casks
+  community.general.homebrew_cask:
+    name:
+      - font-hack-nerd-font # https://github.com/ryanoasis/nerd-fonts
+      - docker-desktop # https://github.com/docker/for-mac
+      - brave-browser # https://github.com/brave/brave-browser
+      - brave-browser@beta # https://github.com/brave/brave-browser
+      - firefox # https://github.com/mozilla/firefox
+      - bitwarden # https://github.com/bitwarden/clients
+      - iterm2 # https://github.com/gnachman/iTerm2
+      - insomnia # https://github.com/Kong/insomnia
+      - rectangle # https://github.com/rxhanson/Rectangle
+      - maccy # https://github.com/p0deje/Maccy
+      - slack # https://github.com/slackhq/slack-desktop
+      - claude # https://claude.ai
+      - claude-code # https://claude.ai/code
+      - sublime-text # https://github.com/sublimehq/sublime_text
+      - superwhisper # https://superwhisper.com
+      - the-unarchiver # https://github.com/MacPaw/XADMaster
+    state: "{{ pkg_state }}"
+    install_options: "{{ ['zap'] if pkg_state == 'absent' else omit }}"
+
+- name: Remove rectangle quarantine attribute and launch it
+  when: pkg_state == 'present'
+  block:
+    - name: Remove rectangle quarantine attribute
+      ansible.builtin.command: xattr -r -d com.apple.quarantine /Applications/Rectangle.app
+      changed_when: false
+
+    - name: Launch rectangle
+      ansible.builtin.command: open -a rectangle
+      changed_when: false
+
+- name: Configure starship and iTerm2
+  when: pkg_state == 'present'
+  block:
+    - name: Ensure ~/.config exists
+      ansible.builtin.file:
+        path: "~/.config"
+        state: directory
+        mode: "0755"
+
+    - name: Copy starship config
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../templates/starship.toml"
+        dest: "~/.config/starship.toml"
+        mode: "0644"
+
+    - name: Copy iTerm2 preferences
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../templates/com.googlecode.iterm2.plist"
+        dest: "~/Library/Preferences/com.googlecode.iterm2.plist"
+        mode: "0644"
+
+- name: Remove starship and iTerm2 config
+  when: pkg_state == 'absent'
+  block:
+    - name: Remove starship config
+      ansible.builtin.file:
+        path: "~/.config/starship.toml"
+        state: absent
+
+    - name: Remove iTerm2 preferences
+      ansible.builtin.file:
+        path: "~/Library/Preferences/com.googlecode.iterm2.plist"
+        state: absent

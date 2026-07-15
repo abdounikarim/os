@@ -1,0 +1,14 @@
+---
+# JavaScript toolchain.
+
+- name: Install/remove JavaScript formulae
+  community.general.homebrew:
+    name:
+      - node # https://github.com/nodejs/node
+      - pnpm # https://github.com/pnpm/pnpm
+    state: "{{ pkg_state }}"
+
+- name: Install/remove WebStorm
+  community.general.homebrew_cask:
+    name: webstorm # https://github.com/JetBrains/intellij-community
+    state: "{{ pkg_state }}"

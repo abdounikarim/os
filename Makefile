@@ -1,31 +1,36 @@
 # macOS provisioning Makefile.
-# Each package under packages/*.mk centralizes both installation and
-# configuration for one language/tool group. `make install` runs them all;
-# `make <package>-install` (e.g. `make php-install`) runs just one.
+# All package installation and configuration is managed by Ansible
+# (see ansible/playbook.yml and ansible/roles/*). This Makefile only
+# bootstraps Homebrew + Ansible, then hands off. `make install` runs every
+# role; `make install-<role>` (e.g. `make install-php`) runs just one.
 # See `make help` for all targets.
 
-PACKAGES := common git zsh php js ruby python cleaner
+.PHONY: install update remove dock-restore dock-save help
 
-include $(wildcard packages/*.mk)
-
-.PHONY: install update remove dock-restore dock-save help \
-	$(foreach p,$(PACKAGES),$(p)-install $(p)-update $(p)-remove)
-
-install: $(foreach p,$(PACKAGES),$(p)-install) ## 📦 Install every package
+install: ## 📦 Install everything
 		sudo true
 		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
+		brew install ansible
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
 
-		# Show hidden files in Finder.
-		defaults write com.apple.finder AppleShowAllFiles TRUE
-		killall Finder
-
-update: ## 🔄 Update every package
-		brew upgrade -y
-		$(MAKE) $(foreach p,$(PACKAGES),$(p)-update)
-
-remove: $(foreach p,$(PACKAGES),$(p)-remove) ## 🗑️ Remove every package and uninstall Homebrew itself
+install-%: ## 📦 Install a single role (common, git, zsh, php, js, ruby, python, cleaner)
 		sudo true
+		command -v brew > /dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
+		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$(PATH)"
+		command -v ansible-playbook > /dev/null 2>&1 || brew install ansible
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $*
+
+update: ## 🔄 Update everything
+		brew upgrade -y
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
+
+update-%: ## 🔄 Update a single role
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $*
+
+remove: ## 🗑️ Remove everything and uninstall Homebrew itself
+		sudo true
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml -e pkg_state=absent
 
 		###> docker ###
 		# Docker Desktop doesn't clean up these binaries on its own:
@@ -46,6 +51,9 @@ remove: $(foreach p,$(PACKAGES),$(p)-remove) ## 🗑️ Remove every package and
 		# https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh | sudo /bin/bash
 		sudo rm -rf /opt/homebrew
+
+remove-%: ## 🗑️ Remove a single role
+		ansible-playbook -i ansible/inventory.yml ansible/playbook.yml --tags $* -e pkg_state=absent
 
 dock-restore: ## Restore Dock configuration
 		cp templates/com.apple.dock.plist ~/Library/Preferences/com.apple.dock.plist

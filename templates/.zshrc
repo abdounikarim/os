@@ -1,4 +1,5 @@
 export ZSH="$HOME/.oh-my-zsh"
+# Full list of bundled oh-my-zsh plugins: https://github.com/ohmyzsh/ohmyzsh/wiki/plugins
 plugins=(
   git
   docker

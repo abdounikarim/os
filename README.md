@@ -46,7 +46,9 @@ entries live in there:
   `zsh-fast-syntax-highlighting` Homebrew formula name it used to have.
 
 See the [oh-my-zsh Customization wiki](https://github.com/ohmyzsh/ohmyzsh/wiki/Customization)
-for how `$ZSH_CUSTOM` and the `plugins=()` array work.
+for how `$ZSH_CUSTOM` and the `plugins=()` array work, and the
+[full bundled plugins list](https://github.com/ohmyzsh/ohmyzsh/wiki/plugins)
+for what else oh-my-zsh ships that could be enabled here.
 
 ## Customize .plist file
 

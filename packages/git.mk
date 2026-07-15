@@ -1,7 +1,6 @@
 # git-related CLI tools and config.
 
 git-install: ## Install git tools and config
-		brew install git-delta # https://github.com/dandavison/delta
 		brew install gh # https://github.com/cli/cli
 
 		cp templates/.gitignore ~/.gitignore
@@ -10,5 +9,5 @@ git-install: ## Install git tools and config
 git-update: git-install ## Update git tools and config
 
 git-remove: ## Remove git tools and config
-		brew uninstall --force --ignore-dependencies git-delta gh
+		brew uninstall --force --ignore-dependencies gh
 		rm -f ~/.gitignore

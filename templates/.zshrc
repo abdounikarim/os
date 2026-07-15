@@ -15,6 +15,12 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 alias cat='bat --theme=Dracula'
+# `gdc` follows the oh-my-zsh git plugin's alias naming convention (short,
+# git-prefixed mnemonics like gdca/gdcw/gdct), but that plugin doesn't define
+# a plain `gdc`, so it's safe to add here without colliding with it:
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/git/git.plugin.zsh
+# Staged diff, skipping lockfiles so reviews stay focused on real changes.
+alias gdc="git diff --cached -- ':!*.lock*' ':!*-lock*'"
 eval "$(starship init zsh)"
 export GPG_TTY=$(tty)
 

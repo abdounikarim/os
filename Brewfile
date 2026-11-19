@@ -5,7 +5,6 @@ tap "box-project/box"
 # 'brew install'
 brew "lsd" # https://github.com/lsd-rs/lsd
 brew "bat" # https://github.com/sharkdp/bat
-brew "git-delta" # https://github.com/dandavison/delta
 brew "act" # https://github.com/nektos/act
 brew "gh" # https://github.com/cli/cli
 brew "gnupg" # https://github.com/gpg/gnupg
